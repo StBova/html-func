@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Функції: Степінь, Факторіал, Квадратне рівняння</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            padding: 30px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        .block {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        input[type="number"] {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-right: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .cancel {
+            background-color: #94a3b8;
+        }
+        .result {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 22px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Степінь числа -->
+    <div class="block">
+        <h2>1️⃣ Обчислення степеня числа</h2>
+        <label>Число x:</label>
+        <input type="number" id="x"><br><br>
+        <label>Ступінь n (≥1):</label>
+        <input type="number" id="n"><br><br>
+        <button onclick="calcPower()">Розрахувати</button>
+        <button class="cancel" onclick="resetPower()">Скинути</button>
+        <div class="result" id="powerResult"></div>
+    </div>
+
+    <!-- 2. Факторіал -->
+    <div class="block">
+        <h2>2️⃣ Обчислення факторіала</h2>
+        <label>Число n (≥0):</label>
+        <input type="number" id="N"><br><br>
+        <button onclick="calcFactorial()">Розрахувати</button>
+        <button class="cancel" onclick="resetFactorial()">Скинути</button>
+        <div class="result" id="factResult"></div>
+    </div>
+
+    <!-- 3. Квадратне рівняння -->
+    <div class="block">
+        <h2>3️⃣ Розв’язання квадратного рівняння</h2>
+        <p><b>ax² + bx + c = 0</b></p>
+        <label>a:</label><input type="number" id="a"><br><br>
+        <label>b:</label><input type="number" id="b"><br><br>
+        <label>c:</label><input type="number" id="c"><br><br>
+        <button onclick="calcQuadratic()">Розрахувати</button>
+        <button class="cancel" onclick="resetQuadratic()">Скасувати</button>
+        <div class="result" id="quadResult"></div>
+    </div>
+
+<script>
+    //  Функція степеня 
+    function stepin(x, n) {
+        let result = 1;
+        for (let i = 1; i <= n; i++) {
+            result = result * x;
+        }
+        return result;
+    }
+    function calcPower() {
+        let x = +document.getElementById("x").value;
+        let n = +document.getElementById("n").value;
+        let out = document.getElementById("powerResult");
+
+        if (n < 1) {
+            out.textContent = "Ступінь n має бути більшим або дорівнювати 1!";
+        } else {
+            let result = stepin(x, n);
+            out.textContent = `${x} у степені ${n} = ${result}`;
+        }
+    }
+    function resetPower() {
+        document.getElementById("x").value = "";
+        document.getElementById("n").value = "";
+        document.getElementById("powerResult").textContent = "";
+    }
+
+    //  Функція факторіала 
+    function factorial(N) {
+        let resultat = 1;
+        for (let i = 1; i <= N; i++) {
+            resultat = resultat * i;
+        }
+        return resultat;
+    }
+    function calcFactorial() {
+        let N = +document.getElementById("N").value;
+        let out = document.getElementById("factResult");
+
+        if (N < 0) {
+            out.textContent = "Число n повинно бути більше або дорівнювати нулю!";
+        } else {
+            let resultat = factorial(N);
+            out.textContent = `Факторіал числа ${N} = ${resultat}`;
+        }
+    }
+    function resetFactorial() {
+        document.getElementById("N").value = "";
+        document.getElementById("factResult").textContent = "";
+    }
+
+    //  Квадратне рівняння 
+    function Discr(a, b, c) {
+        let D = b * b - 4 * a * c;
+        let x1, x2;
+
+        if (D > 0) {
+            x1 = (-b + Math.sqrt(D)) / (2 * a);
+            x2 = (-b - Math.sqrt(D)) / (2 * a);
+            return `D = ${D}. Два корені: x₁ = ${x1}, x₂ = ${x2}.`;
+        } else if (D === 0) {
+            x1 = -b / (2 * a);
+            return `D = ${D}. Один корінь: x = ${x1}.`;
+        } else {
+            return `D = ${D}. Немає дійсних коренів.`;
+        }
+    }
+    function calcQuadratic() {
+        let a = +document.getElementById("a").value;
+        let b = +document.getElementById("b").value;
+        let c = +document.getElementById("c").value;
+        let out = document.getElementById("quadResult");
+
+        if (a === 0) {
+            out.textContent = "Це не квадратне рівняння, бо a = 0!";
+        } else {
+            out.textContent = Discr(a, b, c);
+        }
+    }
+    function resetQuadratic() {
+        document.getElementById("a").value = "";
+        document.getElementById("b").value = "";
+        document.getElementById("c").value = "";
+        document.getElementById("quadResult").textContent = "";
+    }
+</script>
+
+</body>
+</html>
